@@ -1,7 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox, simpledialog
 from datetime import datetime, timedelta
-# hi twin
+import json
+import os
+
+LOG_FILE = "work_log.json"
 
 class WorkTimerApp:
     def __init__(self, root):
@@ -32,6 +35,8 @@ class WorkTimerApp:
         self.log_btn = tk.Button(root, text="Work Log", command=self.show_log, width=20, bg="#9b59b6", fg="white", font=("Helvetica", 12))
         self.log_btn.pack(pady=10)
 
+        self.load_log()
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
         self.update_timer()
 
     def toggle_clock(self):
@@ -129,6 +134,25 @@ class WorkTimerApp:
             current_duration = datetime.now() - self.start_time - self.total_paused
             self.time_display.config(text=str(current_duration).split(".")[0])
         self.root.after(1000, self.update_timer)
+
+    def save_log(self):
+        try:
+            with open(LOG_FILE, 'w') as f:
+                json.dump(self.log, f, indent=4)
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to save log: {e}")
+
+    def load_log(self):
+        if os.path.exists(LOG_FILE):
+            try:
+                with open(LOG_FILE, 'r') as f:
+                    self.log = json.load(f)
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to load saved log: {e}")
+
+    def on_close(self):
+        self.save_log()
+        self.root.destroy()
 
 if __name__ == "__main__":
     root = tk.Tk()
