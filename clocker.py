@@ -20,7 +20,7 @@ class WorkTimerApp:
         self.total_paused = timedelta()
         self.log = []
 
-        self.title_label = tk.Label(root, text="Work Time Tracker", font=("Helvetica", 16, "bold"), fg="white", bg="#2c3e50")
+        self.title_label = tk.Label(root, text=" Krootzy's awesome Work Time Tracker", font=("Helvetica", 16, "bold"), fg="white", bg="#2c3e50")
         self.title_label.pack(pady=10)
 
         self.time_display = tk.Label(root, text="00:00:00", font=("Helvetica", 24), fg="#1abc9c", bg="#2c3e50")
